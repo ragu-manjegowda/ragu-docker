@@ -1,1 +1,1 @@
-docker run -v $HOME:/mnt -it baseimage:latest bash
+docker run -v $HOME:/mnt -it raag079/docker:latest bash
