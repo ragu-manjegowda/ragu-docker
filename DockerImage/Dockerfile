@@ -23,13 +23,18 @@ RUN apt-get update -qqy \
 # Update the repository sources list
 RUN apt-get update
 
-# Install basic pacakges
+# Install basic packages
 RUN apt-get install -y \
   --no-install-recommends apt-utils \
   nano \
   sudo \
   vim \
+  cmake \
+  tmux \
   wget
+
+# Delete packages cache
+RUN rm -rf /var/lib/apt/lists/*
 
 # SET ENV
 ENV HOME /home
@@ -57,10 +62,29 @@ RUN wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate && \
 RUN pip install wikipedia \
   pyopenssl ndg-httpsclient pyasn1
 
-# Update the repository sources list once more
+# Delete packages cache
+RUN rm -rf /var/lib/apt/lists/*
+
+################## LITTLE OS ######################
+
+# Update the repository sources list
 RUN apt-get update
 
+# Install Basic packages
+RUN apt-get install -y \
+  build-essential \
+  nasm \
+  genisoimage \
+  bochs \
+  bochs-sdl
+
+# Delete packages cache
+RUN rm -rf /var/lib/apt/lists/*
+
 ############################## INSTALLATION END ##############################
+
+# Copy VIM config file
+COPY configFiles/.vimrc $HOME/.vimrc
 
 # Set working directory
 WORKDIR "/home"
