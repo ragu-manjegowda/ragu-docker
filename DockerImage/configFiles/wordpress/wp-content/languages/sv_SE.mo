@@ -1,0 +1,1 @@
+/usr/share/wordpress/wp-content/languages/sv_SE.mo

@@ -1,0 +1,1 @@
+/usr/share/wordpress/wp-content/languages/admin-network-ug_CN.mo

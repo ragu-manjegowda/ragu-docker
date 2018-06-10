@@ -1,0 +1,1 @@
+/usr/share/wordpress/wp-content/languages/ko_KR.mo

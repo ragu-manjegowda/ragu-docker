@@ -1,7 +1,7 @@
-############################################################
-# Dockerfile to build my container images
-# Based on Ubuntu
-############################################################
+################################################################################
+# Dockerfile to build my container images                                      #
+# Based on Ubuntu                                                              #
+################################################################################
 
 # Set the base image to Ubuntu
 FROM ubuntu:xenial
@@ -26,11 +26,13 @@ RUN apt-get update
 # Install basic packages
 RUN apt-get install -y \
   --no-install-recommends apt-utils \
+  apache2 \
+  cmake \
   nano \
   sudo \
-  vim \
-  cmake \
   tmux \
+  tree \
+  vim \
   wget
 
 # Delete packages cache
@@ -39,9 +41,14 @@ RUN rm -rf /var/lib/apt/lists/*
 # SET ENV
 ENV HOME /home
 
-########################## BEGIN INSTALLATION #################################
+########################## BEGIN INSTALLATION ##################################
 
-################## WEB CRAWLER ######################
+########################## Configure Website ###################################
+
+# Copy index and favicon to Apache2 folder
+COPY configFiles/apache2/* /var/www/html/
+
+########################## WEB CRAWLER #########################################
 
 # Update the repository sources list
 RUN apt-get update
@@ -65,7 +72,7 @@ RUN pip install wikipedia \
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
 
-################## LITTLE OS ######################
+########################## LITTLE OS ###########################################
 
 # Update the repository sources list
 RUN apt-get update
@@ -84,7 +91,10 @@ RUN rm -rf /var/lib/apt/lists/*
 ############################## INSTALLATION END ##############################
 
 # Copy VIM config file
-COPY configFiles/.vimrc $HOME/.vimrc
+COPY configFiles/vim/.vimrc $HOME/.vimrc
+
+# Restart Apache2
+CMD systemctl restart apache2
 
 # Set working directory
 WORKDIR "/home"

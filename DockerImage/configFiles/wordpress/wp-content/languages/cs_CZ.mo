@@ -1,0 +1,1 @@
+/usr/share/wordpress/wp-content/languages/cs_CZ.mo

@@ -1,0 +1,1 @@
+/usr/share/wordpress/wp-content/languages/continents-cities-nn_NO.mo
