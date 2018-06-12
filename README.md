@@ -1,23 +1,32 @@
-# Docker
+# Ragu's Docker
 
-My docker image with all the necessary dependencies installed for my projects
-that I am working on.
+My docker image with all the necessary dependencies installed for my projects.
+Since I work on multiple workstations I am creating a docker image instead of
+spending time installing them on all the machines. This also helps me avoid single 
+point of failure.
 
 ## Instructions
 
-### Build image
+### User instructions
+
+Simply run
+```shell
+$ docker run -it raag079/docker:latest bash
+```
+or
+```shell
+$./run.sh
+```
+
+### Developer instructions
 
 Modify DockerImage/Dockerfile according to the requirement and run,
 ```shell
 $ ./build.sh
 ```
 
-## Run image
+Push image to docker hub,
 ```shell
-$ ./run.sh
+$ ./push
 ```
-
-## Push image to docker hub
-```shell
-$ ./push username password
-```
+#### You might have to modify build and run scripts according to your needs.
