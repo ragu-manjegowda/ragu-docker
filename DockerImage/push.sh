@@ -9,9 +9,9 @@ fi
 
 dt=$(date '+%Y%m%d');
 
-docker login -u=raag079
-docker tag baseimage:latest raag079/docker:latest
-docker tag raag079/docker:latest raag079/docker:$dt
+docker login -u=ragumanjegowda
+docker tag baseimage:latest ragumanjegowda/docker:latest
+docker tag raag079/docker:latest ragumanjegowda/docker:$dt
 
-docker push raag079/docker:$dt
-docker push raag079/docker:latest
+docker push ragumanjegowda/docker:$dt
+docker push ragumanjegowda/docker:latest
