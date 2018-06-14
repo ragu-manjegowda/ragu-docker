@@ -43,9 +43,6 @@ RUN apt-get install -y \
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
 
-# SET ENV
-ENV HOME /home
-
 ########################## BEGIN INSTALLATION ##################################
 
 ########################## Configure Website ###################################
@@ -101,11 +98,12 @@ COPY configFiles/vim/.vimrc $HOME/.vimrc
 # Restart Apache2
 CMD systemctl restart apache2
 
-# Set working directory
-WORKDIR /home
-
 # Set default container command
-ENTRYPOINT echo ===============Change dir to $HOME ================ && /bin/bash
+ENTRYPOINT echo =============== Change dir to $HOME, if required ============= \
+  && /bin/bash
 
 # Set default user
 USER dev
+
+# Set working directory
+WORKDIR /home/dev

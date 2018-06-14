@@ -10,7 +10,7 @@ if [ "$(uname)" == "Darwin" ]; then
  
   eval "sudo docker pull ragumanjegowda/docker:latest"
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-		` $DEV_OPTS $BASHRC -it ragumanjegowda/docker:latest /bin/bash"
+		` $DEV_OPTS $BASHRC -w $HOME -it ragumanjegowda/docker:latest /bin/bash"
 
 ################################################################################
 #################### For Linux #################################################
@@ -45,7 +45,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   
   eval "sudo docker pull ragumanjegowda/docker:latest"
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS`
+          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS -w $HOME`
           `-it ragumanjegowda/docker:latest /bin/bash ; rm -rf $HOME_DIR"
 
 ################################################################################
