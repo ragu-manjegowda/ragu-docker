@@ -11,7 +11,7 @@ point of failure.
 
 Simply run
 ```shell
-$ docker run -it raag079/docker:latest bash
+$ docker run -it ragumanjegowda/docker:latest bash
 ```
 or
 ```shell
