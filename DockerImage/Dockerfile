@@ -12,6 +12,11 @@ MAINTAINER Raghavendra Manjegowda <raghavendrahm0410@gmail.com>
 # Set default shell to bash
 RUN ln -sf /bin/bash /bin/sh
 
+# Create a development user
+RUN useradd -ms /bin/bash dev && \
+  echo "dev:dev" | chpasswd && \
+  adduser dev sudo
+
 # Disable build warnings
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -28,6 +33,7 @@ RUN apt-get install -y \
   --no-install-recommends apt-utils \
   apache2 \
   cmake \
+  vim-gtk \
   nano \
   sudo \
   tmux \
@@ -88,7 +94,7 @@ RUN apt-get install -y \
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
 
-############################## INSTALLATION END ##############################
+############################## INSTALLATION END ################################
 
 # Copy VIM config file
 COPY configFiles/vim/.vimrc $HOME/.vimrc
@@ -97,8 +103,10 @@ COPY configFiles/vim/.vimrc $HOME/.vimrc
 CMD systemctl restart apache2
 
 # Set working directory
-WORKDIR "/home"
+WORKDIR /home
 
 # Set default container command
-ENTRYPOINT /bin/bash
-CMD ["ls"]
+ENTRYPOINT echo ===============Change dir to $HOME ================ && /bin/bash
+
+# Set default user
+USER dev

@@ -1,1 +1,1 @@
-docker build -t "baseimage:latest" .
+docker build -t "testimage:latest" .
