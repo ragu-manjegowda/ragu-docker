@@ -33,7 +33,6 @@ RUN apt-get install -y \
   --no-install-recommends apt-utils \
   apache2 \
   cmake \
-  vim-gtk \
   nano \
   sudo \
   tmux \
