@@ -33,6 +33,7 @@ RUN apt-get install -y \
   --no-install-recommends apt-utils \
   apache2 \
   cmake \
+  git \
   nano \
   sudo \
   tmux \
@@ -92,18 +93,24 @@ RUN rm -rf /var/lib/apt/lists/*
 
 ############################## INSTALLATION END ################################
 
-# Copy VIM config file
-COPY configFiles/vim/.vimrc $HOME/.vimrc
-
 # Restart Apache2
 CMD systemctl restart apache2
-
-# Set default container command
-ENTRYPOINT echo =============== Change dir to $HOME, if required ============= \
-  && /bin/bash
 
 # Set default user
 USER dev
 
+# SET ENV
+ENV HOME /home/dev
+
 # Set working directory
-WORKDIR /home/dev
+WORKDIR $HOME
+
+# Copy VIM config file
+COPY configFiles/vim/.vimrc $HOME/.vimrc
+
+# Copy GIT config file
+COPY configFiles/git/.git* $HOME/
+
+# Set default container command
+ENTRYPOINT echo =============== Change dir to $HOME ================ && \
+  cp /home/dev/.vimrc $HOME && cp /home/dev/.git* $HOME && /bin/bash
