@@ -10,7 +10,7 @@ if [ "$(uname)" == "Darwin" ]; then
  
   eval "sudo docker pull ragumanjegowda/docker:latest"
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-		` $DEV_OPTS $BASHRC -w $HOME -it ragumanjegowda/docker:latest /bin/bash"
+		` $DEV_OPTS $BASHRC -it ragumanjegowda/docker:latest /bin/bash"
 
 ################################################################################
 #################### For Linux #################################################

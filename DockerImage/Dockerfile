@@ -78,15 +78,17 @@ RUN rm -rf /var/lib/apt/lists/*
 ########################## LITTLE OS ###########################################
 
 # Update the repository sources list
-RUN apt-get update
+RUN apt-get update -y && apt-get upgrade -y
 
 # Install Basic packages
 RUN apt-get install -y \
-  build-essential \
-  nasm \
-  genisoimage \
   bochs \
-  bochs-sdl
+  bochs-sdl \
+  build-essential \
+  gdb \
+  genisoimage \
+  nasm \
+  qemu-system-x86
 
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
@@ -113,4 +115,4 @@ COPY configFiles/git/.git* $HOME/
 
 # Set default container command
 ENTRYPOINT echo =============== Change dir to $HOME ================ && \
-  cp /home/dev/.vimrc $HOME && cp /home/dev/.git* $HOME && /bin/bash
+  cp -u /home/dev/.vimrc $HOME 2>/dev/null || : && cp -u /home/dev/.git* $HOME 2>/dev/null || : && /bin/bash
