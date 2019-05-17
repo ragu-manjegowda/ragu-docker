@@ -4,13 +4,19 @@
 if [ "$(uname)" == "Darwin" ]; then
   DEV_OPTS="-v ~/:/mnt"
 
+  # allow access from localhost, this will also start Xterm to export X11
+  echo "Install XQuartz and allow connections from network clients to run UI `
+       `apps inside docker"
+  xhost + 127.0.0.1
+
   if [ -f /Users/${USER}/.bashrc ]; then
     BASHRC="-v /Users/${USER}/.bashrc:/home/dev/.bashrc:rw "
   fi
  
   eval "sudo docker pull ragumanjegowda/docker:latest"
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-		` $DEV_OPTS $BASHRC -it ragumanjegowda/docker:latest /bin/bash"
+         ` -e DISPLAY=host.docker.internal:0 ` 
+         ` $DEV_OPTS $BASHRC -it ragumanjegowda/docker:latest /bin/bash"
 
 ################################################################################
 #################### For Linux #################################################
