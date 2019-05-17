@@ -9,8 +9,8 @@ if [ "$(uname)" == "Darwin" ]; then
        `apps inside docker"
   xhost + 127.0.0.1
 
-  if [ -f /Users/${USER}/.bashrc ]; then
-    BASHRC="-v /Users/${USER}/.bashrc:/home/dev/.bashrc:rw "
+  if [ -f /Users/${USER}/.bash_profile ]; then
+    BASHRC="-v /Users/${USER}/.bash_profile:/home/dev/.bashrc:rw "
   fi
  
   eval "sudo docker pull ragumanjegowda/docker:latest"
