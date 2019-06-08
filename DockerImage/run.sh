@@ -29,7 +29,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
          `-v ${HOME}/.Xauthority:/home/${USER}/.Xauthority:rw `
          `-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
 
-  DEV_OPTS="-v ${HOME}:/mnt"
+  DEV_OPTS="-v ${HOME}:/mnt `
+           `-w ${HOME}"
 
   NET_OPTS='--net=host'
 
@@ -42,7 +43,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
             `-v /var/lib/sss/pipes:/var/lib/sss/pipes:rw"
 
   if [ -f /home/${USER}/.bashrc ]; then
-    BASHRC="-v /home/${USER}/.bashrc:/home/${USER}/.bashrc:rw "
+    BASHRC="-v /home/${USER}/.bashrc:/home/${USER}/.bashrc:rw"
   fi
 
   if [ -d /data ]; then
