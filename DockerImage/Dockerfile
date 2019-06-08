@@ -85,6 +85,7 @@ RUN apt-get install -y \
   bochs \
   bochs-sdl \
   build-essential \
+  doxygen \
   gdb \
   genisoimage \
   nasm \
@@ -114,5 +115,5 @@ COPY configFiles/vim/.vimrc $HOME/.vimrc
 COPY configFiles/git/.git* $HOME/
 
 # Set default container command
-ENTRYPOINT echo =============== Change dir to $HOME ================ && \
-  cp -u /home/dev/.vimrc $HOME 2>/dev/null || : && cp -u /home/dev/.git* $HOME 2>/dev/null || : && /bin/bash
+ENTRYPOINT cp -u /home/dev/.vimrc $HOME 2>/dev/null || : && \
+           cp -u /home/dev/.git* $HOME 2>/dev/null || : && /bin/bash
