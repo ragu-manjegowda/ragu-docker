@@ -23,7 +23,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Disable apt-utils warning
 RUN apt-get update -qqy \
   && apt-get -qqy install \
-  wget ca-certificates apt-transport-https
+  apt-utils wget ca-certificates \
+  apt-transport-https
 
 # Update the repository sources list
 RUN apt-get update
@@ -93,6 +94,29 @@ RUN apt-get install -y \
 
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
+
+########################### R AND PKGDOWN ######################################
+
+# Update the repository sources list
+RUN apt-get update -y && apt-get upgrade -y
+
+# Install R packages
+RUN apt-get install -y \
+  r-cran-littler \
+  pandoc libcurl4-openssl-dev \
+  libxml2-dev libssl-dev
+
+# Delete packages cache
+RUN rm -rf /var/lib/apt/lists/*
+
+# Install release version PKGDOWN from CRAN
+RUN R -e 'install.packages("pkgdown", repo="http://cran.us.r-project.org")'
+
+# Install release version DEVTOOLS from CRAN
+RUN R -e 'install.packages("devtools", repos="http://cran.us.r-project.org")'
+
+# Install development version from GitHub
+RUN R -e 'devtools::install_github("r-lib/pkgdown")'
 
 ############################## INSTALLATION END ################################
 

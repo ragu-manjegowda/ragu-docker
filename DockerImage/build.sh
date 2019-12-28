@@ -22,10 +22,9 @@ if [ "$(uname)" == "Darwin" ]; then
     BASHRC="-v /Users/${USER}/.bash_profile:/home/dev/.bashrc:rw "
   fi
  
-  eval "sudo docker pull ragumanjegowda/docker:latest"
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
           `-e DISPLAY=host.docker.internal:0 ` 
-          `$DEV_OPTS $BASHRC -it ragumanjegowda/docker:latest /bin/bash"
+          `$DEV_OPTS $BASHRC -it testimage:latest /bin/bash"
 
 ################################################################################
 #################### For Linux #################################################
@@ -59,7 +58,6 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     DATA_OPTS='-v /data:/data'
   fi
   
-  eval "sudo docker pull ragumanjegowda/docker:latest"
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
           `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS `
           `-it testimage:latest /bin/bash; rm -rf $HOME_DIR"
