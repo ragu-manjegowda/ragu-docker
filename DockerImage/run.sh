@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ################################################################################
 #################### For MacOS #################################################
 ################################################################################
@@ -21,7 +23,7 @@ if [ "$(uname)" == "Darwin" ]; then
 ################################################################################
 #################### For Linux #################################################
 ################################################################################
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+elif [ "$(uname -s)" == "Linux" ]; then
   HOME_DIR="$(mktemp -d)"
 
   X_OPTS="-e SSH_CLIENT=${SSH_CLIENT} -e DISPLAY `
@@ -29,8 +31,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
          `-v ${HOME}/.Xauthority:/home/${USER}/.Xauthority:rw `
          `-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
 
-  DEV_OPTS="-v ${HOME}:/mnt `
-           `-w ${HOME}"
+  DEV_OPTS="-v ${HOME}:/mnt"
 
   NET_OPTS='--net=host'
 
@@ -43,7 +44,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
             `-v /var/lib/sss/pipes:/var/lib/sss/pipes:rw"
 
   if [ -f /home/${USER}/.bashrc ]; then
-    BASHRC="-v /home/${USER}/.bashrc:/home/${USER}/.bashrc:rw"
+    BASHRC="-v /home/${USER}/.bashrc:/home/${USER}/.bashrc:rw "
   fi
 
   if [ -d /data ]; then
@@ -52,7 +53,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   
   eval "sudo docker pull ragumanjegowda/docker:latest"
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS `
+          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS -w ${HOME} `
           `-it ragumanjegowda/docker:latest /bin/bash; rm -rf $HOME_DIR"
 
 ################################################################################
