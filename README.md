@@ -1,4 +1,7 @@
-# Ragu's Docker
+[![Docker Image CI](https://github.com/ragu-manjegowda/ragu-docker/workflows/Docker%20Image%20CI/badge.svg)](https://github.com/ragu-manjegowda/ragu-docker/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+# Ragu's Docker Image
 
 My docker image with all the necessary dependencies installed for my projects.
 Since I work on multiple workstations I am creating a docker image instead of
@@ -9,24 +12,27 @@ point of failure.
 
 ### User instructions
 
-Simply run
+#### Simply run
 ```shell
 $ docker run -it ragumanjegowda/docker:latest bash
 ```
-or
+
+#### or
 ```shell
 $./run.sh
 ```
 
 ### Developer instructions
 
-Modify DockerImage/Dockerfile according to the requirement and run,
+#### To build locally,
 ```shell
 $ ./build.sh
 ```
 
-Push image to docker hub,
+#### To push image to docker hub,
 ```shell
 $ ./push
 ```
+
 #### You might have to modify build and run scripts according to your needs.
+
