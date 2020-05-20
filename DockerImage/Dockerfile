@@ -33,6 +33,7 @@ RUN apt-get update
 RUN apt-get install -y \
   --no-install-recommends apt-utils \
   apache2 \
+  clang-format \
   cmake \
   git \
   nano \
@@ -120,6 +121,18 @@ RUN R -e 'devtools::install_github("r-lib/pkgdown")'
 
 # Export BROWSER variable to launch website after build
 ENV BROWSER /usr/bin/firefox
+
+################ Sensor Fusion Project specific packages #######################
+
+# Update the repository sources list
+RUN apt-get update -y && apt-get upgrade -y
+
+# Install R packages
+RUN apt-get install -y \
+  libpcl-dev
+
+# Delete packages cache
+RUN rm -rf /var/lib/apt/lists/*
 
 ############################## INSTALLATION END ################################
 
