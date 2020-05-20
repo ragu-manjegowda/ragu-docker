@@ -59,7 +59,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   fi
   
   eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS `
+          `$DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS `
           `-it testimage:latest /bin/bash; rm -rf $HOME_DIR"
 
 ################################################################################
