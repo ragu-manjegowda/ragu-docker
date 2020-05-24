@@ -22,7 +22,7 @@ if [ "$(uname)" == "Darwin" ]; then
     BASHRC="-v /Users/${USER}/.bash_profile:/home/dev/.bashrc:rw "
   fi
  
-  eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
+  eval "docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
           `-e DISPLAY=host.docker.internal:0 ` 
           `$DEV_OPTS $BASHRC -it testimage:latest /bin/bash"
 
@@ -30,10 +30,13 @@ if [ "$(uname)" == "Darwin" ]; then
 #################### For Linux #################################################
 ################################################################################
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
+  # allow access from localhost, this will also start Xterm to export X11
+  xhost +local:
+
   HOME_DIR="$(mktemp -d)"
 
-  X_OPTS="-e SSH_CLIENT=${SSH_CLIENT} -e DISPLAY `
-         `-e QT_X11_NO_MITSHM=1 --privileged `
+  X_OPTS="-e QT_X11_NO_MITSHM=1 --privileged `
          `-v ${HOME}/.Xauthority:/home/${USER}/.Xauthority:rw `
          `-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
 
@@ -58,8 +61,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     DATA_OPTS='-v /data:/data'
   fi
   
-  eval "sudo docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-          `$DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS `
+  eval "docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
+          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS `
           `-it testimage:latest /bin/bash; rm -rf $HOME_DIR"
 
 ################################################################################
