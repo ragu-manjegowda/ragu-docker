@@ -37,6 +37,7 @@ RUN apt-get install -y \
   cmake \
   git \
   nano \
+  ninja-build \
   sudo \
   tmux \
   tree \
@@ -127,12 +128,33 @@ ENV BROWSER /usr/bin/firefox
 # Update the repository sources list
 RUN apt-get update -y && apt-get upgrade -y
 
-# Install R packages
+# Install PCL, QT5 and dependecies for openCV
 RUN apt-get install -y \
-  libpcl-dev
+  libpcl-dev \
+  qt5-default \
+  mesa-utils \
+  python-numpy \
+  pkg-config \
+  libavcodec-dev \
+  libavformat-dev \
+  libswscale-dev
 
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
+
+# Install OpenCV
+RUN git clone https://github.com/opencv/opencv.git && \
+  cd opencv && git checkout -b 4.3.0 && \
+  mkdir build && cd build && \
+  cmake \
+  -D CMAKE_BUILD_TYPE=Release \
+  -D CMAKE_INSTALL_PREFIX=/opt/opencv \
+  -D WITH_QT=ON \
+  -D WITH_OPENGL=ON \
+  -D WITH_GTK=OFF \
+  -G Ninja .. && \
+  ninja install && \
+  rm -rf opencv
 
 ############################## INSTALLATION END ################################
 
