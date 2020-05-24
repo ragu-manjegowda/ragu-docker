@@ -1,4 +1,6 @@
 #!/bin/bash
+# halt script on error
+set -e
 
 ################################################################################
 #################### For MacOS #################################################
@@ -23,10 +25,17 @@ if [ "$(uname)" == "Darwin" ]; then
 ################################################################################
 #################### For Linux #################################################
 ################################################################################
-elif [ "$(uname -s)" == "Linux" ]; then
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
+  if [[ -z "${DISPLAY}" ]]; then
+    echo "Setting DISPLAY=:1 as the value"
+    DISPLAY=:1
+  fi
+
+  echo "If you see INVALID MAGIC COOKIE error, run \"export DISPLAY=:1\""
 
   # allow access from localhost, this will also start Xterm to export X11
-  xhost +local:docker
+  xhost +local:
 
   HOME_DIR="$(mktemp -d)"
 
@@ -34,7 +43,8 @@ elif [ "$(uname -s)" == "Linux" ]; then
          `-v ${HOME}/.Xauthority:/home/${USER}/.Xauthority:rw `
          `-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
 
-  DEV_OPTS="-v ${HOME}:/mnt"
+  DEV_OPTS="-v ${HOME}:/mnt `
+           `-w ${HOME}"
 
   NET_OPTS='--net=host'
 
@@ -47,16 +57,16 @@ elif [ "$(uname -s)" == "Linux" ]; then
             `-v /var/lib/sss/pipes:/var/lib/sss/pipes:rw"
 
   if [ -f /home/${USER}/.bashrc ]; then
-    BASHRC="-v /home/${USER}/.bashrc:/home/${USER}/.bashrc:rw "
+    BASHRC="-v /home/${USER}/.bashrc:/home/${USER}/.bashrc:rw"
   fi
 
   if [ -d /data ]; then
     DATA_OPTS='-v /data:/data'
   fi
-  
+
   eval "docker pull ragumanjegowda/docker:latest"
   eval "docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS -w ${HOME} `
+          `$X_OPTS $DEV_OPTS $NET_OPTS $AUTH_OPTS $BASHRC $DATA_OPTS `
           `-it ragumanjegowda/docker:latest /bin/bash; rm -rf $HOME_DIR"
 
 ################################################################################

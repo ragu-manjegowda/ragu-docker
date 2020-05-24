@@ -1,3 +1,7 @@
+#!/bin/bash
+# halt script on error
+set -e
+
 ################################################################################
 #################### Build Image ###############################################
 ################################################################################
@@ -30,6 +34,13 @@ if [ "$(uname)" == "Darwin" ]; then
 #################### For Linux #################################################
 ################################################################################
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
+  if [[ -z "${DISPLAY}" ]]; then
+    echo "Setting DISPLAY=:1 as the value"
+    DISPLAY=:1
+  fi
+
+  echo "If you see INVALID MAGIC COOKIE error, run \"export DISPLAY=:1\""
 
   # allow access from localhost, this will also start Xterm to export X11
   xhost +local:
