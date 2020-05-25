@@ -128,9 +128,8 @@ ENV BROWSER /usr/bin/firefox
 # Update the repository sources list
 RUN apt-get update -y && apt-get upgrade -y
 
-# Install PCL, QT5 and dependecies for openCV
+# Install QT5 and dependecies for openCV
 RUN apt-get install -y \
-  libpcl-dev \
   qt5-default \
   mesa-utils \
   python-numpy \
@@ -154,7 +153,7 @@ RUN git clone https://github.com/opencv/opencv.git && \
   -D WITH_GTK=OFF \
   -G Ninja .. && \
   ninja install && \
-  rm -rf opencv
+  cd ../../ && rm -rf opencv
 
 ############################## INSTALLATION END ################################
 
