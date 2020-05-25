@@ -3,8 +3,8 @@
 # Based on Ubuntu                                                              #
 ################################################################################
 
-# Set the base image to Ubuntu
-FROM ubuntu:xenial
+# Set the base image to Ubuntu 18.04
+FROM ubuntu:bionic
 
 # File Author / Maintainer
 MAINTAINER Raghavendra Manjegowda <raghavendrahm0410@gmail.com>
@@ -33,7 +33,7 @@ RUN apt-get update
 RUN apt-get install -y \
   --no-install-recommends apt-utils \
   apache2 \
-  clang-format \
+  clang-format-8 \
   cmake \
   git \
   nano \
@@ -156,6 +156,10 @@ RUN git clone https://github.com/opencv/opencv.git && \
   cd ../../ && rm -rf opencv
 
 ############################## INSTALLATION END ################################
+
+# Create symlink for clang-format
+USER root
+RUN ln -s /usr/bin/clang-format-8 /usr/bin/clang-format
 
 # Restart Apache2
 CMD systemctl restart apache2
