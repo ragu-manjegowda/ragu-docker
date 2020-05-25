@@ -175,6 +175,9 @@ COPY configFiles/vim/.vimrc $HOME/.vimrc
 # Copy GIT config file
 COPY configFiles/git/.git* $HOME/
 
+# Copy TMUX config file
+COPY configFiles/tmux/.tmux.conf $HOME/
+
 # Set default container command
 ENTRYPOINT cp -u /home/dev/.vimrc $HOME 2>/dev/null || : && \
            cp -u /home/dev/.git* $HOME 2>/dev/null || : && /bin/bash
