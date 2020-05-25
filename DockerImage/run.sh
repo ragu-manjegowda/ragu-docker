@@ -16,10 +16,13 @@ if [ "$(uname)" == "Darwin" ]; then
   if [ -f /Users/${USER}/.bash_profile ]; then
     BASHRC="-v /Users/${USER}/.bash_profile:/home/dev/.bashrc:rw "
   fi
- 
+
+  # This is required for running PCL apps (OpenGL apps)
+  defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+
   eval "docker pull ragumanjegowda/docker:latest"
   eval "docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-          `-e DISPLAY=host.docker.internal:0 ` 
+          `--env="QT_X11_NO_MITSHM=1" -e DISPLAY=host.docker.internal:0 `
           `$DEV_OPTS $BASHRC -it ragumanjegowda/docker:latest /bin/bash"
 
 ################################################################################

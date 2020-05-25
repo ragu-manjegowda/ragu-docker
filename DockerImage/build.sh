@@ -22,12 +22,15 @@ if [ "$(uname)" == "Darwin" ]; then
        `apps inside docker"
   xhost + 127.0.0.1
 
+  # This is required for running PCL apps (OpenGL apps)
+  defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+
   if [ -f /Users/${USER}/.bash_profile ]; then
     BASHRC="-v /Users/${USER}/.bash_profile:/home/dev/.bashrc:rw "
   fi
  
   eval "docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined `
-          `-e DISPLAY=host.docker.internal:0 ` 
+          `--env="QT_X11_NO_MITSHM=1" -e DISPLAY=host.docker.internal:0 `
           `$DEV_OPTS $BASHRC -it testimage:latest /bin/bash"
 
 ################################################################################
