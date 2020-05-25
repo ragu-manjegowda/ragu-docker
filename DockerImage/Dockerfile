@@ -128,8 +128,11 @@ ENV BROWSER /usr/bin/firefox
 # Update the repository sources list
 RUN apt-get update -y && apt-get upgrade -y
 
-# Install QT5 and dependecies for openCV
+# Install PCL and its dependecies, QT5 and dependecies for openCV
 RUN apt-get install -y \
+  libproj-dev \
+  libopenni2-dev \
+  libpcl-dev \
   qt5-default \
   mesa-utils \
   python-numpy \
