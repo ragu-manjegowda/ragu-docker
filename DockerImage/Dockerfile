@@ -126,26 +126,33 @@ ENV BROWSER /usr/bin/firefox
 ################ Sensor Fusion Project specific packages #######################
 
 # Update the repository sources list
-RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get update -y && \
+  apt-get upgrade -y
 
 # Install PCL and its dependecies, QT5 and dependecies for openCV
 RUN apt-get install -y \
-  libproj-dev \
-  libopenni2-dev \
-  libpcl-dev \
-  qt5-default \
-  mesa-utils \
-  python-numpy \
-  pkg-config \
   libavcodec-dev \
   libavformat-dev \
-  libswscale-dev
+  libopenni2-dev \
+  libpcl-dev \
+  libproj-dev \
+  libswscale-dev \
+  mesa-utils \
+  pkg-config \
+  python3-pip \
+  qt5-default
+
+# Install numpy, adding pip (pip2) to maintain compatibility with old projects
+RUN pip install --no-cache-dir numpy && pip3 install --no-cache-dir numpy
 
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
 
 # Install OpenCV
-RUN git clone https://github.com/opencv/opencv.git && \
+RUN export CURRENT_DIR=$PWD && \
+  git clone https://github.com/opencv/opencv.git && \
+  git clone https://github.com/opencv/opencv_contrib.git && \
+  cd opencv_contrib && git checkout -b 4.3.0 && cd $CURRENT_DIR && \
   cd opencv && git checkout -b 4.3.0 && \
   mkdir build && cd build && \
   cmake \
@@ -154,9 +161,10 @@ RUN git clone https://github.com/opencv/opencv.git && \
   -D WITH_QT=ON \
   -D WITH_OPENGL=ON \
   -D WITH_GTK=OFF \
+  -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
   -G Ninja .. && \
   ninja install && \
-  cd ../../ && rm -rf opencv
+  cd $CURRENT_DIR && rm -rf opencv opencv_contrib
 
 ############################## INSTALLATION END ################################
 
