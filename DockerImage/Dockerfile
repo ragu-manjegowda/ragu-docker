@@ -97,7 +97,9 @@ RUN apt-get install -y \
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
 
-########################### R AND PKGDOWN ######################################
+#################################### R #########################################
+
+################################## PKGDOWN #####################################
 
 # Update the repository sources list
 RUN apt-get update -y && apt-get upgrade -y
@@ -119,6 +121,14 @@ RUN R -e 'install.packages("devtools", repos="http://cran.us.r-project.org")'
 
 # Install development version from GitHub
 RUN R -e 'devtools::install_github("r-lib/pkgdown")'
+
+################################## PAGEDOWN #####################################
+
+# Install release version of remotes from CRAN
+RUN R -e 'install.packages("remotes", repos="http://cran.us.r-project.org")'
+
+# Install release version of pagedown from Github
+RUN R -e 'remotes::install_github("rstudio/pagedown")'
 
 ################ Sensor Fusion Project specific packages #######################
 
