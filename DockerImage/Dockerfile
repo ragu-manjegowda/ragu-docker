@@ -106,7 +106,7 @@ RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y \
   r-cran-littler pandoc \
   libxml2-dev libssl-dev \
-  libcurl4-openssl-dev firefox
+  libcurl4-openssl-dev
 
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*
@@ -120,14 +120,10 @@ RUN R -e 'install.packages("devtools", repos="http://cran.us.r-project.org")'
 # Install development version from GitHub
 RUN R -e 'devtools::install_github("r-lib/pkgdown")'
 
-# Export BROWSER variable to launch website after build
-ENV BROWSER /usr/bin/firefox
-
 ################ Sensor Fusion Project specific packages #######################
 
 # Update the repository sources list
-RUN apt-get update -y && \
-  apt-get upgrade -y
+RUN apt-get update -y && apt-get upgrade -y
 
 # Install PCL and its dependecies, QT5 and dependecies for openCV
 RUN apt-get install -y \
