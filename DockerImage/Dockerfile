@@ -172,6 +172,28 @@ RUN export CURRENT_DIR=$PWD && \
   ninja install && \
   cd $CURRENT_DIR && rm -rf opencv opencv_contrib
 
+############################## INSTALL BROWSER #################################
+
+# Update the repository sources list
+RUN apt-get update -y && apt-get upgrade -y
+
+# Install Google Chrome browser
+RUN apt-get install -y libxss1 libappindicator1 libindicator7
+
+# Download Google Chrome Debian
+RUN wget \
+  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+# Install Google Chrome
+RUN apt install -y ./google-chrome*.deb && \
+  rm ./google-chrome*.deb
+
+# Delete packages cache
+RUN rm -rf /var/lib/apt/lists/*
+
+# Export BROWSER variable
+ENV BROWSER /usr/bin/google-chrome
+
 ############################## INSTALLATION END ################################
 
 # Create symlink for clang-format
