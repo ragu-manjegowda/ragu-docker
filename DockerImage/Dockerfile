@@ -36,6 +36,7 @@ RUN apt-get install -y \
   clang-format-8 \
   cmake \
   git \
+  git-lfs \
   nano \
   ninja-build \
   sudo \
