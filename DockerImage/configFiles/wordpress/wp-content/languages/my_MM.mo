@@ -1,1 +1,0 @@
-/usr/share/wordpress/wp-content/languages/my_MM.mo

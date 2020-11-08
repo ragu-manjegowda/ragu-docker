@@ -50,11 +50,6 @@ RUN rm -rf /var/lib/apt/lists/*
 
 ########################## BEGIN INSTALLATION ##################################
 
-########################## Configure Website ###################################
-
-# Copy index and favicon to Apache2 folder
-COPY configFiles/apache2/* /var/www/html/
-
 ########################## WEB CRAWLER #########################################
 
 # Update the repository sources list
@@ -109,7 +104,14 @@ RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y \
   r-cran-littler pandoc \
   libxml2-dev libssl-dev \
-  libcurl4-openssl-dev
+  libcurl4-openssl-dev \
+  libfontconfig1-dev \
+  libharfbuzz-dev \
+  libfribidi-dev \
+  libfreetype6-dev \
+  libpng-dev \
+  libtiff5-dev \
+  libjpeg-dev
 
 # Delete packages cache
 RUN rm -rf /var/lib/apt/lists/*

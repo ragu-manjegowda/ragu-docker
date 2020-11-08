@@ -1,1 +1,0 @@
-/usr/share/wordpress/wp-content/languages/continents-cities-fa_IR.mo

@@ -1,1 +1,0 @@
-/usr/share/wordpress/wp-content/languages/ug_CN.mo

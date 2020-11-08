@@ -1,1 +1,0 @@
-/usr/share/wordpress/wp-content/languages/admin-network-ko_KR.mo

@@ -1,1 +1,0 @@
-/usr/share/wordpress/wp-content/languages/su_ID.mo
