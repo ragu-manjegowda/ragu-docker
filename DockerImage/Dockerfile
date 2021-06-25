@@ -3,8 +3,8 @@
 # Based on Ubuntu                                                              #
 ################################################################################
 
-# Set the base image to Ubuntu 18.04
-FROM ubuntu:bionic
+# Set the base image to Ubuntu 20.04
+FROM ubuntu:focal
 
 # File Author / Maintainer
 MAINTAINER Raghavendra Manjegowda <raghavendrahm0410@gmail.com>
@@ -62,10 +62,7 @@ RUN apt-get install -y \
   sqlite3
 
 # Install pip
-RUN wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate && \
-  chmod +x get-pip.py && \
-  python get-pip.py && \
-  rm get-pip.py
+RUN apt-get install -y python3-pip
 
 # Install dependencies
 RUN pip install wikipedia \

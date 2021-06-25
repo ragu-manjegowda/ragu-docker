@@ -44,7 +44,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
   X_OPTS="-e QT_X11_NO_MITSHM=1 --privileged `
          `-v ${HOME}/.Xauthority:/home/${USER}/.Xauthority:rw `
-         `-v /tmp/.X11-unix:/tmp/.X11-unix:rw"
+         `-v /tmp/.X11-unix:/tmp/.X11-unix:rw `
+         `-v ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR}:rw"
 
   DEV_OPTS="-v ${HOME}:/mnt `
            `-w ${HOME}"
