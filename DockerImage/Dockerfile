@@ -35,6 +35,7 @@ RUN apt-get install -y \
   apache2 \
   clang-format-8 \
   cmake \
+  curl \
   git \
   git-lfs \
   nano \
@@ -194,6 +195,15 @@ RUN rm -rf /var/lib/apt/lists/*
 # Export BROWSER variable
 ENV BROWSER /usr/bin/google-chrome
 
+################################ INSTALL RUST ##################################
+
+# Install Rust
+ENV CARGO_HOME=/opt/cargo
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/opt/cargo/bin:${PATH}"
+RUN echo "rustup default stable" >> /opt/cargo/update.sh && \
+  chmod a+x /opt/cargo/update.sh
+
 ############################## INSTALLATION END ################################
 
 # Create symlink for clang-format
@@ -223,4 +233,5 @@ COPY configFiles/tmux/.tmux.conf $HOME/
 
 # Set default container command
 ENTRYPOINT cp -u /home/dev/.vimrc $HOME 2>/dev/null || : && \
-           cp -u /home/dev/.git* $HOME 2>/dev/null || : && /bin/bash
+           cp -u /home/dev/.git* $HOME 2>/dev/null || : && \
+           echo "run /opt/cargo/update.sh for RUST" && /bin/bash
