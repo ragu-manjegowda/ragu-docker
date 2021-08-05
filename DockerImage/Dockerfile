@@ -195,14 +195,36 @@ RUN rm -rf /var/lib/apt/lists/*
 # Export BROWSER variable
 ENV BROWSER /usr/bin/google-chrome
 
+############################### INSTALL RUBY ###################################
+
+# Install asdf
+RUN git clone https://github.com/asdf-vm/asdf.git /opt/asdf
+
+ENV ASDF_DATA_DIR /opt/asdf
+
+RUN source /opt/asdf/asdf.sh && \
+  source /opt/asdf/completions/asdf.bash && \
+  asdf plugin add ruby && \
+  asdf install ruby 2.6.2 && \
+  asdf global ruby 2.6.2
+
+ENV PATH="/opt/asdf/installs/ruby/2.6.2/bin:${PATH}"
+
 ################################ INSTALL RUST ##################################
 
 # Install Rust
+ENV RUSTUP_HOME=/opt/rust
 ENV CARGO_HOME=/opt/cargo
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH=/opt/cargo/bin:/opt/rust/bin:$PATH
+
+RUN echo "(curl https://sh.rustup.rs -sSf | \
+  sh -s -- -y --default-toolchain stable --no-modify-path) && \
+  rustup default stable" > /opt/update-rust.sh && \
+  chmod 755 /opt/update-rust.sh
+
+RUN /opt/update-rust.sh
+
 ENV PATH="/opt/cargo/bin:${PATH}"
-RUN echo "rustup default stable" >> /opt/cargo/update.sh && \
-  chmod a+x /opt/cargo/update.sh
 
 ############################## INSTALLATION END ################################
 
@@ -234,4 +256,8 @@ COPY configFiles/tmux/.tmux.conf $HOME/
 # Set default container command
 ENTRYPOINT cp -u /home/dev/.vimrc $HOME 2>/dev/null || : && \
            cp -u /home/dev/.git* $HOME 2>/dev/null || : && \
-           echo "run /opt/cargo/update.sh for RUST" && /bin/bash
+           source /opt/asdf/asdf.sh || : && \
+           source /opt/asdf/completions/asdf.bash || : && \
+           asdf global ruby 2.6.2 || : && \
+           echo "ruby version is $(ruby --version)" || : && \
+           source /opt/cargo/env && /bin/bash
