@@ -220,10 +220,12 @@ ENV PATH=/opt/cargo/bin:/opt/rust/bin:$PATH
 RUN echo "(curl https://sh.rustup.rs -sSf | \
   sh -s -- -y --default-toolchain stable --no-modify-path) && \
   rustup default stable" > /opt/update-rust.sh && \
-  chmod 755 /opt/update-rust.sh
+  chmod 757 /opt/update-rust.sh
 
 RUN /opt/update-rust.sh
 
+RUN find /opt/cargo -type d -exec chmod 757 {} \;
+RUN find /opt/rust -type d -exec chmod 757 {} \;
 ENV PATH="/opt/cargo/bin:${PATH}"
 
 ############################## INSTALLATION END ################################
